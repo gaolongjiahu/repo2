@@ -1,0 +1,29 @@
+alter table pdm.p_screen_sys_stat_mom_d rename to pdm.p_screen_sys_stat_mom_d_back;
+
+CREATE TABLE `pdm.p_screen_sys_stat_mom_d`(
+`data_date` varchar(10) COMMENT '数据日期', 
+`report_year` int COMMENT '报表年', 
+`report_month` int COMMENT '报表月', 
+`cust_fmb_add_bal` double COMMENT '富民宝每月增加金额', 
+`cust_fmb_n_incr_bal` double COMMENT '富民宝每月净增加金额', 
+`cust_fmb_reduce_bal` double COMMENT '富民宝每月减少金额') 
+comment '大屏显示M+1统计信息报表'
+stored as PARQUET;
+
+insert into pdm.p_screen_sys_stat_mom_d
+(
+report_year
+,report_month
+,cust_fmb_add_bal
+,cust_fmb_n_incr_bal
+,cust_fmb_reduce_bal
+)
+select 
+report_year
+,report_month
+,cust_fmb_add_bal
+,cust_fmb_n_incr_bal
+,cust_fmb_reduce_bal
+from 
+p_screen_sys_stat_mom_d_back
+;

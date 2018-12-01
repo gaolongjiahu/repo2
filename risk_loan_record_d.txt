@@ -1,0 +1,55 @@
+alter table pdm.risk_loan_record_d rename to pdm.risk_loan_record_d_back;
+
+CREATE TABLE `pdm.risk_loan_record_d`(
+  `product_no` varchar(32) COMMENT '产品编号', 
+  `borrowing_number` varchar(50) COMMENT '借据号', 
+  `user_name` varchar(64) COMMENT '用户姓名', 
+  `id_number` varchar(32) COMMENT '用户身份证号', 
+  `loan_money` decimal(16,2) COMMENT '放款金额', 
+  `loan_status` varchar(2) COMMENT '放款状态 0成功 1失败 2处理中', 
+  `loan_date` timestamp COMMENT '放款时间', 
+  `entry_date` timestamp COMMENT '录入时间', 
+  `deal_status` varchar(2) COMMENT '处理状态 0未处理,1处理成功 -1处理异常', 
+  `deal_result` varchar(2000) COMMENT '处理结果', 
+  `create_date` timestamp COMMENT '创建时间', 
+  `create_userid` bigint COMMENT '创建人ID', 
+  `modify_date` timestamp COMMENT '修改时间', 
+  `modify_userid` bigint COMMENT '修改人ID')
+COMMENT '借款记录表'
+PARTITIONED BY (`data_date` varchar(10))
+stored as parquet;
+
+insert into pdm.risk_loan_record_d partition(data_date)
+(
+  `product_no`  -- '产品编号', 
+  ,`borrowing_number` -- '借据号', 
+  ,`user_name`  -- '用户姓名', 
+  ,`id_number`  -- '用户身份证号', 
+  ,`loan_money`  -- '放款金额', 
+  ,`loan_status`  -- '放款状态 0成功 1失败 2处理中', 
+  ,`loan_date`  -- '放款时间', 
+  ,`entry_date`  -- '录入时间', 
+  ,`deal_status`  -- '处理状态 0未处理,1处理成功 -1处理异常', 
+  ,`deal_result`  -- '处理结果', 
+  ,`create_date`  -- '创建时间', 
+  ,`create_userid`  -- '创建人ID', 
+  ,`modify_date` -- '修改时间', 
+  ,`modify_userid`  -- '修改人ID'
+)
+select 
+  `product_no`  -- '产品编号', 
+  ,`borrowing_number` -- '借据号', 
+  ,`user_name`  -- '用户姓名', 
+  ,`id_number`  -- '用户身份证号', 
+  ,`loan_money`  -- '放款金额', 
+  ,`loan_status`  -- '放款状态 0成功 1失败 2处理中', 
+  ,`loan_date`  -- '放款时间', 
+  ,`entry_date`  -- '录入时间', 
+  ,`deal_status`  -- '处理状态 0未处理,1处理成功 -1处理异常', 
+  ,`deal_result`  -- '处理结果', 
+  ,`create_date`  -- '创建时间', 
+  ,`create_userid`  -- '创建人ID', 
+  ,`modify_date` -- '修改时间', 
+  ,`modify_userid`  -- '修改人ID'
+  from 
+  pdm.risk_loan_record_d_back;

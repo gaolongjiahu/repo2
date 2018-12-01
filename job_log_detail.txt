@@ -1,0 +1,28 @@
+alter table pdm.job_log_detail rename to job_log_detail_back;
+
+CREATE TABLE `pdm.job_log_detail`(
+  `data_date` varchar(20) COMMENT '数据日期',
+  `tab_title` varchar(20) COMMENT '主题名',
+  `tab_name` varchar(200) COMMENT '任务表名',
+  `job_step` varchar(10) COMMENT '任务步骤(start:00,end:99)',
+  `job_time` timestamp COMMENT '时间',
+  `job_info` varchar(512) COMMENT '执行信息')
+COMMENT '日志记录表'
+stored as PARQUET;
+
+insert into  pdm.job_log_detail
+(
+data_date,
+tab_title,
+tab_name,
+job_step,
+job_time,
+job_info
+)
+select data_date,
+tab_title,
+tab_name,
+job_step,
+job_time,
+job_info
+from job_log_detail_back;
